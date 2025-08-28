@@ -5,6 +5,25 @@ All notable changes to the ORO Commerce MCP Server will be documented in this fi
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.1.3] - 2024-12-28
+
+### ✨ Features
+- **Claude Code Support** - Added `.mcp.json` configuration for project-specific MCP server setup
+- **Configuration Templates** - Added `.mcp.json.example` for easy setup
+- **Enhanced Documentation** - Updated README with both Claude Desktop and Claude Code configuration examples
+- **Project Documentation** - Added `CLAUDE.md` with comprehensive project information for AI assistants
+
+### 🔧 Improvements
+- **Simplified Setup** - Copy-paste configuration workflow with example files
+- **Better Git Management** - Proper `.gitignore` entries for Claude Code configurations
+- **Dual Platform Support** - Works seamlessly with both Claude Desktop and Claude Code
+- **Developer Experience** - Clear documentation for different use cases
+
+### 📝 Documentation
+- **Claude Code Integration Guide** - Step-by-step setup for project-specific MCP servers
+- **Configuration Examples** - Both global (Claude Desktop) and project-specific (Claude Code) setups
+- **Project Recognition** - Added attribution for Claude.ai assistance in development
+
 ## [0.1.2] - 2024-12-28
 
 ### ✨ Features

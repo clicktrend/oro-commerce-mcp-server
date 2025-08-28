@@ -103,7 +103,9 @@ npm start
 - **Production with self-signed certs:** Set `DISABLE_SSL_VERIFY=true` to disable SSL verification
 - **Production with valid certs:** No additional configuration needed
 
-### 5. Use with Claude Desktop
+### 5. Use with Claude Desktop or Claude Code
+
+**Claude Desktop Configuration:**
 
 Add to your Claude Desktop config:
 
@@ -122,6 +124,39 @@ Add to your Claude Desktop config:
   }
 }
 ```
+
+**Claude Code Configuration:**
+
+For Claude Code projects, copy the example configuration:
+
+```bash
+# Copy example configuration
+cp .mcp.json.example .mcp.json
+
+# Edit with your credentials
+nano .mcp.json
+```
+
+Or create `.mcp.json` manually in your project root:
+
+```json
+{
+  \"mcpServers\": {
+    \"oro-commerce\": {
+      \"command\": \"oro-commerce-mcp-server\",
+      \"env\": {
+        \"ORO_SHOP_URL\": \"https://your-oro-commerce.com\",
+        \"ORO_CLIENT_ID\": \"your_client_id\",
+        \"ORO_CLIENT_SECRET\": \"your_client_secret\",
+        \"NODE_ENV\": \"development\"
+      },
+      \"description\": \"Dynamic ORO Commerce API integration\"
+    }
+  }
+}
+```
+
+**Note:** The `.mcp.json` file is automatically loaded by Claude Code on restart and is added to `.gitignore` to prevent credential exposure.
 
 ## 🛠️ Available Tools
 
@@ -372,6 +407,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ---
 
-**Made with ❤️ by [Clicktrend](https://github.com/clicktrend)**
+**Made with ❤️ by [Clicktrend](https://github.com/clicktrend)**  
+**Built with [Claude.ai](https://claude.ai) assistance**
 
 *Transform your ORO Commerce data into AI-accessible insights*

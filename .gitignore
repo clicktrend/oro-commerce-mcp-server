@@ -98,3 +98,7 @@ mcp-*.js
 
 # ORO Commerce specific
 oro_commerce_swagger_dump.json
+
+# Claude Code project configuration (may contain sensitive data)
+.claude/
+.mcp.json

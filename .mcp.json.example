@@ -1,0 +1,16 @@
+{
+  "mcpServers": {
+    "oro-commerce": {
+      "command": "oro-commerce-mcp-server",
+      "env": {
+        "ORO_SHOP_URL": "https://your-oro-commerce.com",
+        "ORO_CLIENT_ID": "your_client_id",
+        "ORO_CLIENT_SECRET": "your_client_secret",
+        "NODE_ENV": "development",
+        "DISABLE_SSL_VERIFY": "true"
+      },
+      "args": [],
+      "description": "Dynamic ORO Commerce API integration - generates 30+ tools from your API schema"
+    }
+  }
+}
