@@ -11,15 +11,25 @@ This document provides practical examples of using the ORO Commerce MCP Server w
 npm install -g oro-commerce-mcp-server
 ```
 
-2. **Configure your environment:**
+2. **Get API schema from ORO Commerce:**
+```bash
+# On your ORO Commerce server:
+console api:swagger:dump > oro_commerce_swagger_dump.json
+
+# Copy to your MCP project directory:
+scp user@oro-server:/path/to/oro_commerce_swagger_dump.json ./oro_commerce_swagger_dump.json
+```
+
+3. **Configure your environment:**
 ```bash
 export ORO_SHOP_URL="https://your-oro-commerce.com"
 export ORO_CLIENT_ID="your_client_id"
 export ORO_CLIENT_SECRET="your_client_secret"
 ```
 
-3. **Start the server:**
+4. **Start the server:**
 ```bash
+# In the directory containing oro_commerce_swagger_dump.json
 oro-commerce-mcp-server
 ```
 

@@ -61,12 +61,25 @@ Create an OAuth application in your ORO Commerce backend:
 
 ### 3. Update API Schema
 
-Generate your current API schema:
+Generate and copy your current API schema:
 
+**On your ORO Commerce server:**
 ```bash
 # In your ORO Commerce application directory
-console api:swagger:dump > /path/to/oro-commerce-mcp-server/oro_commerce_swagger_dump.json
+console api:swagger:dump > oro_commerce_swagger_dump.json
 ```
+
+**Copy to your MCP project directory:**
+```bash
+# Copy the file to where you'll run the MCP server
+# Example: scp from remote server
+scp user@oro-server:/path/to/oro_commerce_swagger_dump.json ./oro_commerce_swagger_dump.json
+
+# Or: Copy from local ORO Commerce installation
+cp /path/to/oro-commerce/oro_commerce_swagger_dump.json ./oro_commerce_swagger_dump.json
+```
+
+**Note:** The `oro_commerce_swagger_dump.json` file must be in the same directory where you start the MCP server.
 
 ### 4. Start the Server
 
@@ -204,7 +217,11 @@ NODE_ENV=production
 # - Upgrading ORO Commerce versions
 # - Modifying API configurations
 
+# On ORO Commerce server:
 console api:swagger:dump > oro_commerce_swagger_dump.json
+
+# Copy to MCP project directory and restart server:
+cp oro_commerce_swagger_dump.json /path/to/mcp-project/
 # Restart MCP server to reload tools
 ```
 

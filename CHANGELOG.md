@@ -5,6 +5,18 @@ All notable changes to the ORO Commerce MCP Server will be documented in this fi
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.1.1] - 2024-12-28
+
+### 🐛 Bug Fixes
+- **CRITICAL: Fixed OAuth2 authentication failure** - Changed Content-Type from application/json to application/x-www-form-urlencoded
+- **Fixed token request format** - Use URL-encoded form data instead of JSON for OAuth2 token requests
+- **Improved error handling** - OAuth2 requests now follow standard form-encoding as required by ORO Commerce
+
+### 📝 Documentation  
+- **Fixed confusing API schema setup instructions** - Clarified that schema file must be copied to MCP project directory
+- **Improved README section 3** - Added clear steps for generating schema on ORO server and copying to MCP project
+- **Updated usage examples** - Added schema generation step to basic setup workflow
+
 ## [0.1.0] - 2024-12-28
 
 ### 🚀 Initial Release

@@ -53,13 +53,9 @@ export class OroCommerceClient {
         
       const response = await axios.post(
         `${this.config.shopUrl}/oauth2-token`,
+        `grant_type=client_credentials&client_id=${encodeURIComponent(this.config.clientId)}&client_secret=${encodeURIComponent(this.config.clientSecret)}`,
         {
-          grant_type: 'client_credentials',
-          client_id: this.config.clientId,
-          client_secret: this.config.clientSecret
-        },
-        {
-          headers: { 'Content-Type': 'application/json' },
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
           httpsAgent
         }
       );
