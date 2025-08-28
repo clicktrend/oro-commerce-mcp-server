@@ -85,13 +85,23 @@ cp /path/to/oro-commerce/oro_commerce_swagger_dump.json ./oro_commerce_swagger_d
 
 ```bash
 # Set environment variables
-export ORO_SHOP_URL=\"https://your-oro-commerce.com\"
-export ORO_CLIENT_ID=\"your_client_id\"
-export ORO_CLIENT_SECRET=\"your_client_secret\"
+export ORO_SHOP_URL="https://your-oro-commerce.com"
+export ORO_CLIENT_ID="your_client_id"
+export ORO_CLIENT_SECRET="your_client_secret"
+
+# For local/development with self-signed certificates:
+export NODE_ENV=development
+# OR use this for production with self-signed certs:
+export DISABLE_SSL_VERIFY=true
 
 # Start server
 npm start
 ```
+
+**SSL Certificate Handling:**
+- **Development/Local:** Set `NODE_ENV=development` to automatically ignore SSL certificate errors
+- **Production with self-signed certs:** Set `DISABLE_SSL_VERIFY=true` to disable SSL verification
+- **Production with valid certs:** No additional configuration needed
 
 ### 5. Use with Claude Desktop
 
@@ -105,7 +115,8 @@ Add to your Claude Desktop config:
       \"env\": {
         \"ORO_SHOP_URL\": \"https://your-oro-commerce.com\",
         \"ORO_CLIENT_ID\": \"your_client_id\", 
-        \"ORO_CLIENT_SECRET\": \"your_client_secret\"
+        \"ORO_CLIENT_SECRET\": \"your_client_secret\",
+        \"NODE_ENV\": \"development\"
       }
     }
   }
@@ -203,7 +214,8 @@ ORO_CLIENT_SECRET=your_oauth_client_secret
 
 # Optional  
 DEBUG=mcp:*
-NODE_ENV=production
+NODE_ENV=development
+DISABLE_SSL_VERIFY=true
 ```
 
 ### Keeping Schema Current

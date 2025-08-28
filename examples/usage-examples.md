@@ -25,6 +25,11 @@ scp user@oro-server:/path/to/oro_commerce_swagger_dump.json ./oro_commerce_swagg
 export ORO_SHOP_URL="https://your-oro-commerce.com"
 export ORO_CLIENT_ID="your_client_id"
 export ORO_CLIENT_SECRET="your_client_secret"
+
+# For self-signed/local certificates:
+export NODE_ENV=development
+# OR for production with self-signed certs:
+export DISABLE_SSL_VERIFY=true
 ```
 
 4. **Start the server:**
@@ -47,7 +52,8 @@ Add to your Claude Desktop config file (`~/Library/Application Support/Claude/cl
       "env": {
         "ORO_SHOP_URL": "https://your-oro-commerce.com",
         "ORO_CLIENT_ID": "your_client_id",
-        "ORO_CLIENT_SECRET": "your_client_secret"
+        "ORO_CLIENT_SECRET": "your_client_secret",
+        "NODE_ENV": "development"
       }
     }
   }

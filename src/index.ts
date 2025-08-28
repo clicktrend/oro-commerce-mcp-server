@@ -331,9 +331,7 @@ class OroCommerceMCPServer {
     }
   }
 
-  async run(): Promise<void> {
-    console.log('🚀 Starting ORO Commerce MCP Server...');
-    
+  private async autoConfigureFromEnv(): Promise<boolean> {
     // Try to load configuration from environment variables
     const oroConfig = {
       shopUrl: process.env.ORO_SHOP_URL,
@@ -343,27 +341,51 @@ class OroCommerceMCPServer {
 
     // Auto-configure if environment variables are present
     if (oroConfig.shopUrl && oroConfig.clientId && oroConfig.clientSecret) {
+      console.log('🔧 Found ORO Commerce configuration in environment variables');
       try {
         const validConfig = OroConfigSchema.parse(oroConfig);
         this.oroClient = new OroCommerceClient(validConfig);
         
-        // Test connection and initialize dynamic client
+        console.log('🔌 Testing ORO Commerce connection...');
         const isConnected = await this.oroClient.testConnection();
+        
         if (isConnected) {
+          console.log('✅ ORO Commerce connection successful!');
+          
+          // Try to load dynamic tools
           try {
             const swaggerPath = join(process.cwd(), 'oro_commerce_swagger_dump.json');
             this.dynamicClient = new DynamicOroClient(swaggerPath, (this.oroClient as any).axios);
-            console.log(`✅ ORO Commerce auto-configured with ${this.dynamicClient.getAvailableTools().length} dynamic tools`);
+            const toolCount = this.dynamicClient.getAvailableTools().length;
+            console.log(`🔧 Initialized ${toolCount} dynamic tools from swagger`);
+            console.log(`✅ ORO Commerce auto-configured with ${toolCount} dynamic tools`);
           } catch (error) {
-            console.log('✅ ORO Commerce auto-configured from environment (dynamic tools unavailable)');
+            console.log('⚠️ Swagger schema not found (oro_commerce_swagger_dump.json), only core tools available');
+            console.log('✅ ORO Commerce auto-configured from environment (core tools only)');
           }
+          return true;
         } else {
+          console.log('❌ ORO Commerce connection test failed - check your credentials');
           console.log('✅ ORO Commerce auto-configured from environment (connection test failed)');
+          return false;
         }
       } catch (error) {
-        console.log('⚠️ ORO Commerce environment config invalid, manual configuration required');
+        console.log('⚠️ ORO Commerce environment config invalid:', error instanceof Error ? error.message : 'Unknown error');
+        console.log('💡 Use configure_oro_connection tool to set up manually');
+        return false;
       }
+    } else {
+      console.log('💡 No ORO Commerce configuration found in environment');
+      console.log('💡 Use configure_oro_connection tool to set up connection');
+      return false;
     }
+  }
+
+  async run(): Promise<void> {
+    console.log('🚀 Starting ORO Commerce MCP Server...');
+    
+    // Try auto-configuration
+    await this.autoConfigureFromEnv();
 
     const transport = new StdioServerTransport();
     await this.server.connect(transport);

@@ -5,6 +5,23 @@ All notable changes to the ORO Commerce MCP Server will be documented in this fi
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.1.2] - 2024-12-28
+
+### ✨ Features
+- **Enhanced SSL Certificate Handling** - Added `DISABLE_SSL_VERIFY` environment variable for production environments with self-signed certificates
+- **Improved Auto-Configuration** - Better startup logging and error messages for configuration debugging
+- **Enhanced User Experience** - Clearer console output showing configuration status and connection test results
+
+### 🔧 Improvements  
+- **Flexible SSL Configuration** - SSL verification can now be disabled with `DISABLE_SSL_VERIFY=true` or `NODE_ENV=development`
+- **Better Startup Flow** - More informative messages during auto-configuration and connection testing
+- **Documentation Updates** - Clear SSL configuration examples for different deployment scenarios
+
+### 📝 Documentation
+- **SSL Configuration Guide** - Added comprehensive SSL certificate handling instructions
+- **Environment Examples** - Updated all examples with SSL configuration options
+- **Usage Scenarios** - Clear guidance for development vs production SSL handling
+
 ## [0.1.1] - 2024-12-28
 
 ### 🐛 Bug Fixes

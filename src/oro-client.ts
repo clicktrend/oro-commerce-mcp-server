@@ -11,8 +11,8 @@ export class OroCommerceClient {
   private tokenExpiry: number | null = null;
 
   constructor(private config: OroConfig) {
-    // Create HTTPS agent that ignores SSL certificate issues for development
-    const httpsAgent = process.env.NODE_ENV === 'development' ? 
+    // Create HTTPS agent that ignores SSL certificate issues for development or when explicitly disabled
+    const httpsAgent = (process.env.NODE_ENV === 'development' || process.env.DISABLE_SSL_VERIFY === 'true') ? 
       new https.Agent({ rejectUnauthorized: false }) : undefined;
 
     this.axios = axios.create({
@@ -48,7 +48,7 @@ export class OroCommerceClient {
 
   private async refreshToken(): Promise<void> {
     try {
-      const httpsAgent = process.env.NODE_ENV === 'development' ? 
+      const httpsAgent = (process.env.NODE_ENV === 'development' || process.env.DISABLE_SSL_VERIFY === 'true') ? 
         new https.Agent({ rejectUnauthorized: false }) : undefined;
         
       const response = await axios.post(
