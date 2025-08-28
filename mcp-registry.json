@@ -1,0 +1,176 @@
+{
+  "name": "oro-commerce-mcp-server",
+  "displayName": "ORO Commerce MCP Server",
+  "description": "Dynamic Model Context Protocol server for ORO Commerce - automatically generates tools from your API schema",
+  "version": "2.0.0",
+  "author": {
+    "name": "Adomio",
+    "url": "https://github.com/adomio"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/adomio/oro-commerce-mcp-server"
+  },
+  "homepage": "https://github.com/adomio/oro-commerce-mcp-server",
+  "keywords": [
+    "mcp",
+    "model-context-protocol",
+    "oro-commerce",
+    "orocommerce", 
+    "e-commerce",
+    "b2b",
+    "crm",
+    "dynamic-tools",
+    "api-integration",
+    "swagger",
+    "openapi",
+    "claude",
+    "ai-integration"
+  ],
+  "categories": [
+    "e-commerce",
+    "business-intelligence", 
+    "crm",
+    "data-integration"
+  ],
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "mcpVersion": "2024-11-05",
+  "capabilities": {
+    "tools": {
+      "dynamic": true,
+      "count": "30+",
+      "description": "Dynamically generated from ORO Commerce Swagger schema"
+    },
+    "resources": false,
+    "prompts": false,
+    "logging": true
+  },
+  "configuration": {
+    "required": [
+      "ORO_SHOP_URL",
+      "ORO_CLIENT_ID", 
+      "ORO_CLIENT_SECRET"
+    ],
+    "optional": [
+      "DEBUG",
+      "NODE_ENV"
+    ],
+    "setup": {
+      "oroCommerce": {
+        "oauthSetup": "System → Integrations → OAuth Applications",
+        "grantType": "client_credentials",
+        "permissions": ["accounts:read", "customers:read", "orders:read", "products:read"]
+      },
+      "schemaUpdate": {
+        "command": "console api:swagger:dump > oro_commerce_swagger_dump.json",
+        "frequency": "After ORO Commerce updates or custom entity changes"
+      }
+    }
+  },
+  "tools": [
+    {
+      "name": "configure_oro_connection",
+      "description": "Configure ORO Commerce API connection",
+      "category": "configuration"
+    },
+    {
+      "name": "test_connections", 
+      "description": "Test ORO Commerce API connectivity",
+      "category": "configuration"
+    },
+    {
+      "name": "list_dynamic_tools",
+      "description": "Browse all dynamically generated tools",
+      "category": "discovery"
+    },
+    {
+      "name": "get_dynamic_tool_info",
+      "description": "Get detailed tool documentation",
+      "category": "discovery"
+    },
+    {
+      "name": "accounts_get",
+      "description": "Get all accounts",
+      "category": "accounts"
+    },
+    {
+      "name": "accounts_id_get", 
+      "description": "Get specific account details",
+      "category": "accounts"
+    },
+    {
+      "name": "b2bcustomers_get",
+      "description": "Get all B2B customers", 
+      "category": "customers"
+    },
+    {
+      "name": "b2bcustomers_id_get",
+      "description": "Get specific B2B customer details",
+      "category": "customers"
+    }
+  ],
+  "useCases": [
+    {
+      "title": "Customer Relationship Management",
+      "description": "Access complete B2B customer profiles, accounts, and relationship data",
+      "tools": ["accounts_get", "b2bcustomers_get", "accounts_id_contacts_get"]
+    },
+    {
+      "title": "Sales Analytics", 
+      "description": "Analyze order patterns, customer behavior, and sales performance",
+      "tools": ["orders_get", "b2bcustomers_get", "accounts_id_activities_get"]
+    },
+    {
+      "title": "Account Management",
+      "description": "Monitor B2B account health, activities, and engagement",
+      "tools": ["accounts_get", "accounts_id_activityemails_get", "accounts_id_notes_get"]
+    },
+    {
+      "title": "Business Intelligence",
+      "description": "Generate insights from ORO Commerce data using AI",
+      "tools": ["list_dynamic_tools", "accounts_get", "b2bcustomers_get"]
+    }
+  ],
+  "installation": {
+    "npm": "npm install -g oro-commerce-mcp-server",
+    "git": "git clone https://github.com/adomio/oro-commerce-mcp-server.git"
+  },
+  "documentation": {
+    "readme": "https://github.com/adomio/oro-commerce-mcp-server/blob/main/README.md",
+    "examples": "https://github.com/adomio/oro-commerce-mcp-server/blob/main/examples/usage-examples.md",
+    "contributing": "https://github.com/adomio/oro-commerce-mcp-server/blob/main/CONTRIBUTING.md"
+  },
+  "support": {
+    "issues": "https://github.com/adomio/oro-commerce-mcp-server/issues",
+    "discussions": "https://github.com/adomio/oro-commerce-mcp-server/discussions",
+    "email": "support@adomio.com"
+  },
+  "features": {
+    "dynamicTools": {
+      "enabled": true,
+      "source": "ORO Commerce Swagger/OpenAPI schema",
+      "totalEndpoints": 3500,
+      "activeTools": 30
+    },
+    "authentication": {
+      "type": "OAuth2",
+      "flow": "client_credentials",
+      "automatic": true
+    },
+    "safety": {
+      "readOnly": true,
+      "dataValidation": true,
+      "errorHandling": true
+    }
+  },
+  "tags": {
+    "enterprise": true,
+    "opensource": true,
+    "production-ready": true,
+    "dynamic": true,
+    "api-integration": true
+  }
+}

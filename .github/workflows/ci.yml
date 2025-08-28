@@ -1,0 +1,143 @@
+name: CI
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    
+    strategy:
+      matrix:
+        node-version: [18.x, 20.x, 22.x]
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+    
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ matrix.node-version }}
+        cache: 'npm'
+    
+    - name: Install dependencies
+      run: npm ci
+    
+    - name: Lint code
+      run: npm run lint
+      continue-on-error: true
+    
+    - name: Build TypeScript
+      run: npm run build
+    
+    - name: Test swagger parsing
+      run: |
+        node -e "
+        import('./dist/swagger-parser.js').then(({ SwaggerParser }) => {
+          console.log('Testing swagger parser...');
+          const parser = new SwaggerParser('./oro_commerce_swagger_dump.json');
+          const endpoints = parser.getAllEndpoints();
+          const tools = parser.generateMCPTools(parser.getPopularEndpoints());
+          console.log('✅ Swagger parser works');
+          console.log('📊 Total endpoints:', endpoints.length);
+          console.log('🔧 Generated tools:', tools.length);
+          if (tools.length < 20) {
+            throw new Error('Expected at least 20 tools to be generated');
+          }
+        }).catch(error => {
+          console.error('❌ Test failed:', error);
+          process.exit(1);
+        });
+        "
+    
+    - name: Test dynamic client
+      run: |
+        node -e "
+        import('./dist/dynamic-client.js').then(({ DynamicOroClient }) => {
+          console.log('Testing dynamic client...');
+          // Mock axios instance for testing
+          const mockAxios = {
+            request: async () => ({ data: { data: [] }, status: 200 })
+          };
+          const client = new DynamicOroClient('./oro_commerce_swagger_dump.json', mockAxios);
+          const tools = client.getAvailableTools();
+          console.log('✅ Dynamic client works');
+          console.log('🔧 Available tools:', tools.length);
+          if (tools.length === 0) {
+            throw new Error('Expected tools to be available');
+          }
+        }).catch(error => {
+          console.error('❌ Test failed:', error);
+          process.exit(1);
+        });
+        "
+
+  build-check:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+    
+    - name: Use Node.js 18
+      uses: actions/setup-node@v4
+      with:
+        node-version: 18
+        cache: 'npm'
+    
+    - name: Install dependencies
+      run: npm ci
+    
+    - name: Check TypeScript compilation
+      run: npm run build
+    
+    - name: Verify dist directory
+      run: |
+        if [ ! -d "dist" ]; then
+          echo "❌ dist directory not created"
+          exit 1
+        fi
+        if [ ! -f "dist/index.js" ]; then
+          echo "❌ dist/index.js not created"
+          exit 1
+        fi
+        echo "✅ Build artifacts verified"
+    
+    - name: Check package.json validity
+      run: npm pkg fix --dry-run
+
+  security:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+    
+    - name: Use Node.js 18
+      uses: actions/setup-node@v4
+      with:
+        node-version: 18
+        cache: 'npm'
+    
+    - name: Install dependencies
+      run: npm ci
+    
+    - name: Run security audit
+      run: npm audit --audit-level moderate
+      continue-on-error: true
+    
+    - name: Check for sensitive files
+      run: |
+        if [ -f ".env" ]; then
+          echo "❌ .env file should not be committed"
+          exit 1
+        fi
+        if grep -r "password\|secret\|key" --include="*.ts" --include="*.js" src/ | grep -v "client_secret\|clientSecret\|API_KEY\|your_"; then
+          echo "❌ Potential secrets found in source code"
+          exit 1
+        fi
+        echo "✅ No sensitive data detected"

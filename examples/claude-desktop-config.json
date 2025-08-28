@@ -1,0 +1,12 @@
+{
+  "mcpServers": {
+    "oro-commerce": {
+      "command": "oro-commerce-mcp-server",
+      "env": {
+        "ORO_SHOP_URL": "https://your-oro-commerce-domain.com",
+        "ORO_CLIENT_ID": "your_oauth_client_id",
+        "ORO_CLIENT_SECRET": "your_oauth_client_secret"
+      }
+    }
+  }
+}
