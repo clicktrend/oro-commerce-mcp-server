@@ -5,10 +5,10 @@ All notable changes to the ORO Commerce MCP Server will be documented in this fi
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [2.0.0] - 2024-12-14
+## [0.1.0] - 2024-12-28
 
-### 🚀 Major Changes
-- **Complete rewrite to dynamic architecture** - No more hardcoded API endpoints
+### 🚀 Initial Release
+- **Dynamic Model Context Protocol server** for ORO Commerce integration
 - **Automatic tool generation** from ORO Commerce Swagger/OpenAPI schema
 - **30+ tools available** (4 core + 26+ dynamically generated)
 - **Self-updating system** - New API endpoints become available automatically
