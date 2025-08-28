@@ -4,15 +4,15 @@
   "description": "Dynamic Model Context Protocol server for ORO Commerce - automatically generates tools from your API schema",
   "version": "2.0.0",
   "author": {
-    "name": "Adomio",
-    "url": "https://github.com/adomio"
+    "name": "Clicktrend",
+    "url": "https://github.com/clicktrend"
   },
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/adomio/oro-commerce-mcp-server"
+    "url": "https://github.com/clicktrend/oro-commerce-mcp-server"
   },
-  "homepage": "https://github.com/adomio/oro-commerce-mcp-server",
+  "homepage": "https://github.com/clicktrend/oro-commerce-mcp-server",
   "keywords": [
     "mcp",
     "model-context-protocol",
@@ -136,17 +136,17 @@
   ],
   "installation": {
     "npm": "npm install -g oro-commerce-mcp-server",
-    "git": "git clone https://github.com/adomio/oro-commerce-mcp-server.git"
+    "git": "git clone https://github.com/clicktrend/oro-commerce-mcp-server.git"
   },
   "documentation": {
-    "readme": "https://github.com/adomio/oro-commerce-mcp-server/blob/main/README.md",
-    "examples": "https://github.com/adomio/oro-commerce-mcp-server/blob/main/examples/usage-examples.md",
-    "contributing": "https://github.com/adomio/oro-commerce-mcp-server/blob/main/CONTRIBUTING.md"
+    "readme": "https://github.com/clicktrend/oro-commerce-mcp-server/blob/main/README.md",
+    "examples": "https://github.com/clicktrend/oro-commerce-mcp-server/blob/main/examples/usage-examples.md",
+    "contributing": "https://github.com/clicktrend/oro-commerce-mcp-server/blob/main/CONTRIBUTING.md"
   },
   "support": {
-    "issues": "https://github.com/adomio/oro-commerce-mcp-server/issues",
-    "discussions": "https://github.com/adomio/oro-commerce-mcp-server/discussions",
-    "email": "support@adomio.com"
+    "issues": "https://github.com/clicktrend/oro-commerce-mcp-server/issues",
+    "discussions": "https://github.com/clicktrend/oro-commerce-mcp-server/discussions",
+    "email": "support@clicktrend.com"
   },
   "features": {
     "dynamicTools": {
