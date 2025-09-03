@@ -123,6 +123,14 @@ class OroCommerceMCPServer {
             required: ['toolName'],
           },
         },
+        {
+          name: 'get_endpoint_statistics',
+          description: 'Get comprehensive statistics about all loaded API endpoints from the swagger schema',
+          inputSchema: {
+            type: 'object',
+            properties: {},
+          },
+        },
         ];
 
       // Add dynamic tools if available
@@ -154,6 +162,9 @@ class OroCommerceMCPServer {
 
           case 'get_dynamic_tool_info':
             return await this.getDynamicToolInfo(args);
+
+          case 'get_endpoint_statistics':
+            return await this.getEndpointStatistics();
           
           default:
             // Try dynamic tools
@@ -327,6 +338,64 @@ class OroCommerceMCPServer {
       };
     } catch (error) {
       const message = error instanceof Error ? error.message : 'Failed to get tool info';
+      throw new McpError(ErrorCode.InternalError, message);
+    }
+  }
+
+  private async getEndpointStatistics() {
+    if (!this.dynamicClient) {
+      return {
+        content: [
+          {
+            type: 'text',
+            text: '⚠️ Dynamic tools not available. Please configure ORO Commerce connection first.',
+          },
+        ],
+      };
+    }
+
+    try {
+      const stats = this.dynamicClient.getEndpointStatistics();
+      
+      let result = `# 📊 ORO Commerce API Endpoint Statistics\\n\\n`;
+      result += `**Total Endpoints Loaded:** ${stats.totalEndpoints}\\n\\n`;
+      
+      result += `## 🔧 By HTTP Method:\\n`;
+      Object.entries(stats.byMethod)
+        .sort(([,a], [,b]) => b - a)
+        .forEach(([method, count]) => {
+          result += `- ${method}: ${count}\\n`;
+        });
+      
+      result += `\\n## 📂 By Category (Top 10):\\n`;
+      Object.entries(stats.byCategory)
+        .sort(([,a], [,b]) => b - a)
+        .slice(0, 10)
+        .forEach(([category, count]) => {
+          result += `- ${category}: ${count}\\n`;
+        });
+      
+      result += `\\n## 🎯 Special Endpoints:\\n`;
+      result += `- Kit Items: ${stats.withKitItems}\\n`;
+      result += `- Orders: ${stats.withOrders}\\n`;
+      result += `- Products: ${stats.withProducts}\\n`;
+      result += `- Relationships: ${stats.relationships}\\n`;
+      
+      result += `\\n## 📋 All Categories (${stats.categories.length}):\\n`;
+      result += stats.categories.join(', ');
+      
+      result += `\\n\\n✅ **All endpoints from the swagger schema are now available as MCP tools!**`;
+
+      return {
+        content: [
+          {
+            type: 'text',
+            text: result,
+          },
+        ],
+      };
+    } catch (error) {
+      const message = error instanceof Error ? error.message : 'Failed to get endpoint statistics';
       throw new McpError(ErrorCode.InternalError, message);
     }
   }

@@ -38,11 +38,11 @@ export class DynamicOroClient {
    * Initialize available tools from swagger
    */
   private initializeTools(): void {
-    // Get popular/commonly used endpoints first
-    const popularEndpoints = this.swaggerParser.getPopularEndpoints();
-    this.availableTools = this.swaggerParser.generateMCPTools(popularEndpoints);
+    // Load ALL endpoints from swagger schema (no filtering)
+    const allEndpoints = this.swaggerParser.getAllEndpoints();
+    this.availableTools = this.swaggerParser.generateMCPTools(allEndpoints);
     
-    console.log(`🔧 Initialized ${this.availableTools.length} dynamic tools from swagger`);
+    console.log(`🔧 Initialized ${this.availableTools.length} dynamic tools from swagger (ALL endpoints loaded)`);
   }
 
   /**
@@ -159,6 +159,48 @@ export class DynamicOroClient {
       tool.endpoint.tags.forEach(tag => categories.add(tag));
     });
     return Array.from(categories).sort();
+  }
+
+  /**
+   * Get comprehensive statistics about loaded endpoints
+   */
+  getEndpointStatistics(): {
+    totalEndpoints: number;
+    byMethod: Record<string, number>;
+    byCategory: Record<string, number>;
+    withKitItems: number;
+    withOrders: number;
+    withProducts: number;
+    relationships: number;
+    categories: string[];
+  } {
+    const stats = {
+      totalEndpoints: this.availableTools.length,
+      byMethod: {} as Record<string, number>,
+      byCategory: {} as Record<string, number>,
+      withKitItems: 0,
+      withOrders: 0,
+      withProducts: 0,
+      relationships: 0,
+      categories: this.getAvailableCategories()
+    };
+
+    this.availableTools.forEach(tool => {
+      const method = tool.endpoint.method;
+      stats.byMethod[method] = (stats.byMethod[method] || 0) + 1;
+
+      tool.endpoint.tags.forEach(tag => {
+        stats.byCategory[tag] = (stats.byCategory[tag] || 0) + 1;
+      });
+
+      const path = tool.endpoint.path.toLowerCase();
+      if (path.includes('kititem')) stats.withKitItems++;
+      if (path.includes('order')) stats.withOrders++;
+      if (path.includes('product')) stats.withProducts++;
+      if (path.includes('relationship')) stats.relationships++;
+    });
+
+    return stats;
   }
 
   /**

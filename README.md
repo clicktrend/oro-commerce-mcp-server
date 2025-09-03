@@ -9,8 +9,8 @@ A **dynamic Model Context Protocol (MCP) server** that provides seamless integra
 ## ✨ Features
 
 🚀 **Dynamic API Integration**
-- **Automatically discovers all API endpoints** from your ORO Commerce Swagger schema
-- **30+ tools generated instantly** - no manual configuration needed
+- **Automatically discovers ALL API endpoints** from your ORO Commerce Swagger schema
+- **Complete API coverage** - every endpoint becomes an available MCP tool
 - **Self-updating** - new API endpoints become available automatically
 - **Zero hardcoded API calls** - everything generated at runtime
 
@@ -22,10 +22,11 @@ A **dynamic Model Context Protocol (MCP) server** that provides seamless integra
 
 🏪 **Complete ORO Commerce Coverage**
 - **Accounts & Customer Management** - Full B2B customer lifecycle
-- **Product Catalog & Attributes** - Products, categories, custom fields
-- **Order Processing** - Orders, line items, status tracking
+- **Product Catalog & Kit Items** - Products, categories, kit configurations, custom fields  
+- **Order Processing** - Orders, line items with kit details, status tracking
 - **Activity Management** - Calls, emails, notes, tasks
 - **Extended Entities** - Custom fields and entity extensions
+- **Relationships & Complex Operations** - All API endpoints including advanced features
 
 🔐 **Enterprise Ready**
 - **OAuth2 authentication** with automatic token management
@@ -97,6 +98,22 @@ export DISABLE_SSL_VERIFY=true
 # Start server
 npm start
 ```
+
+### 5. Test with MCP Inspector (Development)
+
+For development and testing, you can use the MCP Inspector:
+
+```bash
+# Install and run MCP Inspector in the project directory
+npx @modelcontextprotocol/inspector
+
+# In the browser interface:
+# - Command: "node"
+# - Arguments: "dist/index.js"
+# - Click "Connect"
+```
+
+This allows you to test all tools interactively before deploying to Claude Desktop/Code.
 
 **SSL Certificate Handling:**
 - **Development/Local:** Set `NODE_ENV=development` to automatically ignore SSL certificate errors

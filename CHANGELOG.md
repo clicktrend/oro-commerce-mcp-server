@@ -5,6 +5,52 @@ All notable changes to the ORO Commerce MCP Server will be documented in this fi
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.2.0] - 2025-01-03
+
+### 🚀 Major Release - Complete API Coverage
+
+### ✨ Breaking Changes
+- **COMPLETE API COVERAGE** - Now loads ALL endpoints from swagger schema instead of filtering to "popular" ones
+- **Removed 50-tool limit** - All 3500+ API endpoints are now available as MCP tools
+- **Removed restrictive filtering** - Only OPTIONS and HEAD methods are excluded, everything else is included
+
+### ✨ New Features
+- **📊 New Tool: `get_endpoint_statistics`** - Comprehensive statistics about loaded API endpoints
+  - Total endpoints count
+  - Breakdown by HTTP method (GET, POST, PUT, DELETE, etc.)
+  - Breakdown by category/tags
+  - Special counts for Kit Items, Orders, Products, Relationships
+  - Complete list of all available categories
+
+### 🔧 Improvements
+- **Complete Kit Items Support** - `/admin/api/products/{id}/kitItems` and related endpoints now available
+- **Full Order Management** - All order-related endpoints including line items with kit details
+- **Comprehensive Product Catalog** - All product endpoints including relationships and complex operations
+- **No API Limitations** - Relationships, complex parameters, and all HTTP methods supported
+
+### 🛠️ Technical Changes
+- **Modified `dynamic-client.ts`** - Now uses `getAllEndpoints()` instead of `getPopularEndpoints()`
+- **Updated `swagger-parser.ts`** - Removed restrictive filtering logic
+- **Enhanced logging** - Better console output showing total loaded tools
+
+### 📋 Testing & Development
+- **MCP Inspector Support** - Tested with `npx @modelcontextprotocol/inspector`
+- **Local Testing** - Confirmed with Command: "node" Arguments: "dist/index.js"
+- **Full API Schema Loading** - Verified complete swagger schema processing
+
+### 📊 Statistics
+- **Previous:** ~50 tools (limited to "popular" endpoints)
+- **Current:** ALL available endpoints from your ORO Commerce API schema
+- **Kit Items:** Full support for kit item management
+- **Orders:** Complete order processing with line item details
+- **Products:** Full product catalog with all relationships
+
+### 🎯 Use Cases Now Supported
+- **Complete Kit Item Management** - Create, read, update kit configurations
+- **Advanced Order Processing** - Full order lifecycle with detailed line items
+- **Comprehensive Product Management** - All product operations and relationships
+- **Complete B2B Workflow** - No API limitations for complex business processes
+
 ## [0.1.3] - 2024-12-28
 
 ### ✨ Features

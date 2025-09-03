@@ -216,18 +216,11 @@ export class SwaggerParser {
    * Check if endpoint should be skipped for MCP tools
    */
   private shouldSkipEndpoint(endpoint: SwaggerEndpoint): boolean {
-    // Skip internal/admin endpoints that are too complex
-    if (endpoint.path.includes('relationships')) return true;
+    // Only skip OPTIONS and HEAD methods for cleaner tools
     if (endpoint.method === 'OPTIONS') return true;
     if (endpoint.method === 'HEAD') return true;
     
-    // Skip endpoints with too many required parameters
-    const requiredParams = endpoint.parameters.filter(p => p.required);
-    if (requiredParams.length > 5) return true;
-
-    // Skip if no clear operation ID and path is too generic
-    if (!endpoint.operationId && endpoint.path.split('/').length < 4) return true;
-
+    // Keep all other endpoints (including relationships, complex parameters, etc.)
     return false;
   }
 
