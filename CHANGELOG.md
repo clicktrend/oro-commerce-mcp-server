@@ -5,6 +5,62 @@ All notable changes to the ORO Commerce MCP Server will be documented in this fi
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.3.0] - 2025-01-03
+
+### 🚀 Major Release - Meta-Tool Architecture (Context-Overflow Fix)
+
+### ✨ Breaking Changes
+- **CONTEXT-OVERFLOW SOLVED** - Only 5 meta-tools registered instead of 3500+ individual endpoints
+- **New Meta-Tool Architecture** - Complete API access via intelligent discovery and execution tools
+- **AI-Optimized Design** - Built specifically for AI agents with clear workflows and instructions
+
+### ✨ New Meta-Tools (Only 5 Tools Registered)
+- **🏪 `oro_capabilities`** - Overview of ORO Commerce API capabilities and available data types
+- **📋 `oro_list_endpoints`** - List all available API endpoints with filtering (category, search, method, limit)
+- **⚡ `oro_execute`** - Universal API executor for any endpoint with parameter validation
+- **📚 `oro_help`** - Comprehensive workflow guide and examples for AI clients
+- **📊 `oro_stats`** - Quick statistics about available endpoints and categories
+
+### 🎯 Key Features
+- **Complete API Access** - All 3500+ endpoints accessible via meta-tools
+- **Zero Context Pollution** - Only 5 tools in MCP context instead of thousands
+- **AI-Friendly Design** - Clear instructions and workflows for AI agents
+- **Smart Discovery** - Find exactly the endpoints you need with powerful filtering
+- **Universal Execution** - Execute any API operation through one unified interface
+
+### 🔧 Technical Architecture
+- **Meta-Tool Pattern** - Discovery → Selection → Execution workflow
+- **Full Swagger Schema Access** - Complete API schema loaded for discovery but not exposed as individual tools
+- **Intelligent Filtering** - Search by category, keywords, HTTP methods
+- **Parameter Validation** - Automatic validation against OpenAPI schema
+- **Enhanced Error Handling** - Clear error messages and usage examples
+
+### 📋 Usage Examples
+```bash
+# Discover capabilities
+oro_capabilities
+
+# Find kit item APIs  
+oro_list_endpoints search="kitItems"
+
+# Execute kit items API
+oro_execute endpoint="/admin/api/products/{id}/kitItems" method="GET" pathParams={"id":"123"}
+
+# Get workflow help
+oro_help
+```
+
+### 🎯 Problem Solved
+- **Before:** "Conversation Compaction Failure" due to 3500+ tools in context
+- **After:** Clean 5-tool interface with complete API access via discovery pattern
+- **AI Compatibility:** Built specifically for AI agent workflows with clear guidance
+
+### 📊 Impact
+- **Context Size:** Reduced from massive to minimal (5 tools vs 3500+)
+- **API Coverage:** Maintained 100% - all endpoints still accessible
+- **Usability:** Enhanced - easier discovery and execution
+- **AI Experience:** Optimized - agents understand how to use the system
+
 ## [0.2.0] - 2025-01-03
 
 ### 🚀 Major Release - Complete API Coverage

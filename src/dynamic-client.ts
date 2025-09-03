@@ -24,6 +24,7 @@ export interface DynamicResponse {
 export class DynamicOroClient {
   private swaggerParser: SwaggerParser;
   private availableTools: ParsedOperation[];
+  private allEndpoints: SwaggerEndpoint[];
 
   constructor(
     swaggerFilePath: string,
@@ -31,6 +32,7 @@ export class DynamicOroClient {
   ) {
     this.swaggerParser = new SwaggerParser(swaggerFilePath);
     this.availableTools = [];
+    this.allEndpoints = [];
     this.initializeTools();
   }
 
@@ -38,11 +40,15 @@ export class DynamicOroClient {
    * Initialize available tools from swagger
    */
   private initializeTools(): void {
-    // Load ALL endpoints from swagger schema (no filtering)
-    const allEndpoints = this.swaggerParser.getAllEndpoints();
-    this.availableTools = this.swaggerParser.generateMCPTools(allEndpoints);
+    // Load ALL endpoints for statistics and discovery
+    this.allEndpoints = this.swaggerParser.getAllEndpoints();
     
-    console.log(`🔧 Initialized ${this.availableTools.length} dynamic tools from swagger (ALL endpoints loaded)`);
+    // Load only popular endpoints as active tools to avoid context overflow
+    // Full API access available via discovery and execution tools
+    const popularEndpoints = this.swaggerParser.getPopularEndpoints();
+    this.availableTools = this.swaggerParser.generateMCPTools(popularEndpoints);
+    
+    console.log(`🔧 Initialized ${this.availableTools.length} core tools from ${this.allEndpoints.length} total endpoints (use discovery tools for complete API access)`);
   }
 
   /**
@@ -162,10 +168,11 @@ export class DynamicOroClient {
   }
 
   /**
-   * Get comprehensive statistics about loaded endpoints
+   * Get comprehensive statistics about all endpoints (not just active tools)
    */
   getEndpointStatistics(): {
     totalEndpoints: number;
+    activeTools: number;
     byMethod: Record<string, number>;
     byCategory: Record<string, number>;
     withKitItems: number;
@@ -175,31 +182,36 @@ export class DynamicOroClient {
     categories: string[];
   } {
     const stats = {
-      totalEndpoints: this.availableTools.length,
+      totalEndpoints: this.allEndpoints.length,
+      activeTools: this.availableTools.length,
       byMethod: {} as Record<string, number>,
       byCategory: {} as Record<string, number>,
       withKitItems: 0,
       withOrders: 0,
       withProducts: 0,
       relationships: 0,
-      categories: this.getAvailableCategories()
+      categories: [] as string[]
     };
 
-    this.availableTools.forEach(tool => {
-      const method = tool.endpoint.method;
+    const allCategories = new Set<string>();
+
+    this.allEndpoints.forEach(endpoint => {
+      const method = endpoint.method;
       stats.byMethod[method] = (stats.byMethod[method] || 0) + 1;
 
-      tool.endpoint.tags.forEach(tag => {
+      endpoint.tags.forEach(tag => {
         stats.byCategory[tag] = (stats.byCategory[tag] || 0) + 1;
+        allCategories.add(tag);
       });
 
-      const path = tool.endpoint.path.toLowerCase();
+      const path = endpoint.path.toLowerCase();
       if (path.includes('kititem')) stats.withKitItems++;
       if (path.includes('order')) stats.withOrders++;
       if (path.includes('product')) stats.withProducts++;
       if (path.includes('relationship')) stats.relationships++;
     });
 
+    stats.categories = Array.from(allCategories).sort();
     return stats;
   }
 
@@ -323,5 +335,39 @@ export class DynamicOroClient {
     }
 
     return doc;
+  }
+
+  /**
+   * Execute any API endpoint by path and method
+   */
+  async executeAnyEndpoint(method: string, path: string, options: DynamicRequestOptions = {}): Promise<DynamicResponse> {
+    const endpoint = this.allEndpoints.find(e => 
+      e.method.toUpperCase() === method.toUpperCase() && 
+      e.path === path
+    );
+
+    if (!endpoint) {
+      return {
+        success: false,
+        error: `Endpoint not found: ${method.toUpperCase()} ${path}. Use get_endpoint_statistics to see available endpoints.`,
+        endpoint: { path, method, operationId: '' }
+      };
+    }
+
+    return await this.executeEndpoint(endpoint, options);
+  }
+
+  /**
+   * Search for endpoints by various criteria
+   */
+  searchEndpoints(query: string): SwaggerEndpoint[] {
+    const lowercaseQuery = query.toLowerCase();
+    return this.allEndpoints.filter(endpoint =>
+      endpoint.path.toLowerCase().includes(lowercaseQuery) ||
+      endpoint.operationId.toLowerCase().includes(lowercaseQuery) ||
+      endpoint.summary.toLowerCase().includes(lowercaseQuery) ||
+      endpoint.description.toLowerCase().includes(lowercaseQuery) ||
+      endpoint.tags.some(tag => tag.toLowerCase().includes(lowercaseQuery))
+    ).slice(0, 20); // Limit results
   }
 }

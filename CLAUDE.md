@@ -113,14 +113,95 @@ cp oro_commerce_swagger_dump.json /path/to/mcp-project/
 
 ## Release Process
 
-1. Update version in `package.json` and `mcp-registry.json`
-2. Update `CHANGELOG.md` with new features/fixes
-3. Build and test: `npm run build`
-4. Commit changes: `git add -A && git commit`
-5. Create tag: `git tag v0.1.x`
-6. Push: `git push origin main && git push origin v0.1.x`
-7. Create GitHub release: `gh release create v0.1.x`
-8. Publish to NPM: `npm publish`
+**WICHTIG: Vollständiger Release-Prozess - alle Schritte müssen ausgeführt werden!**
+
+### 1. Version Updates
+```bash
+# Update version in package.json and mcp-registry.json
+# Example: "0.1.3" → "0.2.0"
+```
+
+### 2. Documentation Updates
+```bash
+# Update CHANGELOG.md with:
+# - New features
+# - Breaking changes  
+# - Technical changes
+# - Testing information
+# - Impact/statistics
+
+# Update README.md if needed:
+# - New features
+# - Installation instructions
+# - Usage examples
+```
+
+### 3. Build and Test
+```bash
+npm run build
+npm run test  # (currently just exits 0, but run anyway)
+```
+
+### 4. Git Commit and Tag
+```bash
+git add -A
+git status  # Check what will be committed
+git commit -m "Release vX.X.X: Description
+
+🚀 Major Features:
+- Feature 1
+- Feature 2
+
+🔧 Technical Changes:  
+- Change 1
+- Change 2
+
+🤖 Generated with [Claude Code](https://claude.ai/code)
+
+Co-Authored-By: Claude <noreply@anthropic.com>"
+
+git tag vX.X.X
+```
+
+### 5. Push to Repository
+```bash
+git push origin main
+git push origin vX.X.X
+```
+
+### 6. Create GitHub Release
+```bash
+gh release create vX.X.X --title "vX.X.X: Release Title" --notes "Detailed release notes..."
+```
+
+### 7. **CRITICAL: Publish to NPM**
+```bash
+npm publish
+# ⚠️ WICHTIG: Dieser Schritt wird oft vergessen!
+# Das Package ist erst nach npm publish in npmjs.org verfügbar!
+```
+
+### 8. Verification
+```bash
+# Verify NPM publication
+npm view oro-commerce-mcp-server@X.X.X
+
+# Verify GitHub release
+# Check: https://github.com/clicktrend/oro-commerce-mcp-server/releases
+```
+
+### ✅ Checklist für jeden Release:
+- [ ] package.json version updated
+- [ ] mcp-registry.json version updated  
+- [ ] CHANGELOG.md updated
+- [ ] README.md updated (if needed)
+- [ ] Build successful (`npm run build`)
+- [ ] Git commit created
+- [ ] Git tag created
+- [ ] Pushed to GitHub (`git push origin main && git push origin vX.X.X`)
+- [ ] GitHub release created (`gh release create`)
+- [ ] **NPM published** (`npm publish`) - **NICHT VERGESSEN!**
+- [ ] NPM publication verified (`npm view oro-commerce-mcp-server@X.X.X`)
 
 ## Dependencies
 
