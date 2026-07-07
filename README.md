@@ -1,3 +1,5 @@
+[![MseeP.ai Security Assessment Badge](https://mseep.net/pr/clicktrend-oro-commerce-mcp-server-badge.png)](https://mseep.ai/app/clicktrend-oro-commerce-mcp-server)
+
 # 🏪 ORO Commerce MCP Server
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
